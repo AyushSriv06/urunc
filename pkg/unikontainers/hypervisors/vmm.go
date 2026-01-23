@@ -52,6 +52,10 @@ var vmmFactories = map[VmmType]VMMFactory{
 		binary:     FirecrackerBinary,
 		createFunc: func(binary, binaryPath string) types.VMM { return &Firecracker{binary: binary, binaryPath: binaryPath} },
 	},
+	CloudHypervisorVmm: {
+		binary:     CloudHypervisorBinary,
+		createFunc: func(binary, binaryPath string) types.VMM { return &CloudHypervisor{binary: binary, binaryPath: binaryPath} },
+	},
 }
 
 func NewVMM(vmmType VmmType, monitors map[string]types.MonitorConfig) (vmm types.VMM, err error) {

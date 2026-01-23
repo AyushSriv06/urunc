@@ -349,6 +349,7 @@ DEFROUTE
 blockfile
 thinpool
 vcpus
+cpus
 Virtiofs
 virtiofs
 virtiofsd
