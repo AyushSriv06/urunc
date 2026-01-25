@@ -460,6 +460,40 @@ func nerdctlTestCases(kvmGroup ...int64) []containerTestArgs {
 			Skippable:      true, // Skip until Cloud Hypervisor images are available
 			TestFunc:       pingTest,
 		},
+		//ukl
+		{
+			Image:          "harbor.nbfc.io/nubificus/urunc/hello-ukl:latest",
+			Name:           "UKL-hello-world",
+			Devmapper:      false,
+			Seccomp:        true,
+			UID:            0,
+			GID:            0,
+			Groups:         []int64{},
+			Memory:         "512M",
+			Cli:            "",
+			Volumes:        []containerVolume{},
+			StaticNet:      false,
+			SideContainers: []string{},
+			Skippable:      true, // Skip until UKL images are available
+			ExpectOut:      "Hello from UKL",
+			TestFunc:       matchTest,
+		},
+		{
+			Image:          "harbor.nbfc.io/nubificus/urunc/nginx-ukl:latest",
+			Name:           "UKL-nginx-ping",
+			Devmapper:      false,
+			Seccomp:        true,
+			UID:            0,
+			GID:            0,
+			Groups:         []int64{},
+			Memory:         "512M",
+			Cli:            "",
+			Volumes:        []containerVolume{},
+			StaticNet:      false,
+			SideContainers: []string{},
+			Skippable:      true, // Skip until UKL images are available
+			TestFunc:       pingTest,
+		},
 	}
 }
 

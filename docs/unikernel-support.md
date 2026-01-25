@@ -342,6 +342,24 @@ An example of a Redis alpine image transformed to a block file on top of
 sudo nerdctl run --rm -ti --runtime io.containerd.urunc.v2 harbor.nbfc.io/nubificus/urunc/redis-firecracker-linux-block:latest
 ```
 
+## UKL
+
+[UKL](https://github.com/unikernelLinux/ukl), or Unikernel Linux, is a research project aiming to turn the Linux kernel into a unikernel. The core idea is to link an application directly with the Linux kernel, creating a single address space image where the application runs in kernel mode (ring 0). This allows for significant performance improvements by eliminating context switches and system call overheads, while maintaining compatibility with the vast ecosystem of Linux applications and drivers.
+
+### VMMs and other sandbox monitors
+
+Since UKL is fundamentally a modified Linux kernel, it inherits Linux's broad hardware and hypervisor support. It typically boots as a `bzImage` and can run on [Qemu](https://qemu.org) and [Firecracker](https://github.com/firecracker-microvm/firecracker), utilizing standard virtio devices for networking and storage.
+
+### UKL and `urunc`
+
+`urunc` treats UKL similarly to a standard Linux guest. It supports booting UKL on both [Qemu](https://qemu.org) and [Firecracker](https://github.com/firecracker-microvm/firecracker). `urunc` configures the necessary boot parameters, including network (via virtio-net) and block storage mappings, to ensure the UKL instance boots correctly.
+
+An example of running a UKL image with `urunc`:
+
+```bash
+sudo nerdctl run --rm -ti --runtime io.containerd.urunc.v2 harbor.nbfc.io/nubificus/urunc/hello-ukl:latest
+```
+
 ## Future unikernels and frameworks:
 
 In the near future, we plan to add support for the following frameworks:
