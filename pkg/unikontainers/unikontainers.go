@@ -558,6 +558,9 @@ func setupUser(user specs.User) error {
 // Kill stops the VMM process, first by asking the VMM struct to stop
 // and consequently by killing the process described in u.State.Pid
 func (u *Unikontainer) Kill() error {
+	// Lock the OS thread before joining the network namespace to prevent
+	// the Go runtime from moving this goroutine to a different OS thread.
+	runtime.LockOSThread()
 	// Try to join the Network namespace of the monitor before killing it.
 	// If we kill it there might be no process inside the namespace and hence
 	// the namespace gets destroyed.
@@ -681,6 +684,7 @@ func (u Unikontainer) joinSandboxNetNs() error {
 	if err != nil {
 		return fmt.Errorf("error opening namespace path: %w", err)
 	}
+	defer unix.Close(fd)
 	err = unix.Setns(int(fd), unix.CLONE_NEWNET)
 	if err != nil {
 		return fmt.Errorf("error joining namespace: %w", err)
